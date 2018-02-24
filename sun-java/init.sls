@@ -23,11 +23,12 @@ sun-java-remove-prev-archive:
       - file: java-install-dir
 
 download-jdk-archive:
-  cmd.run:
-    - name: curl {{ java.dl_opts }} -o '{{ archive_file }}' '{{ java.source_url }}'
-    - unless: test -f {{ java.java_realcmd }}
+  cp.get_url:
+    - path: {{ java.source_url }}
+    - dest: {{ archive_file }}
     - require:
       - file: sun-java-remove-prev-archive
+    - unless: test -f {{ java.java_realcmd}}
 
   {%- if java.source_hash %}
 
